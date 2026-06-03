@@ -4,11 +4,13 @@
  * Optimiert für direkte Nutzung imperialer Einheiten (Ecowitt CSV Format)
  * Inkl. Regen, Solar, UV, Taupunkt und lokaler Zeitzone für Logs
  * Ermöglicht das übertragen mehrerer Stationen an Windy
+ * Programmiert von: wetter-zerbst.org | wetter.zerbst@gmail.com
  * ===
  * Zerbst Weather Network (ZEWN) - Windy API v2 (JSON POST via cURL)
  * Optimized for direct use of imperial units (Ecowitt CSV format)
  * Includes rain, solar, UV, dew point, and local time zone for logs
  * Enables the transmission of data from multiple stations to Windy
+ * Programmed by: wetter-zerbst.org | wetter.zerbst@gmail.com
  */
 
 // --- NEU: Standard-Zeitzone für alle PHP-Datumsfunktionen auf Berlin setzen ---
