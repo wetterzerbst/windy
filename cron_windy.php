@@ -29,27 +29,30 @@ $stations = [
         'stationId' => '0'
     ],
     'Washington' => [
-        'active'    => false, // true = Datenübertragung eingeschaltet | false = ausgeschaltet
-        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen
-        apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen
+        'active'    => false, // true = Datenübertragung eingeschaltet | false = ausgeschaltet | true = Data transfer enabled | false = disabled
+        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen | Enter the Ecowitt data file here
+        apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen | Enter your API key here
         'stationId' => '1'
     ],
     'Moskau' => [
-        'active'    => false, // true = Datenübertragung eingeschaltet | false = ausgeschaltet
-        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen
-        apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen
+        'active'    => false, // true = Datenübertragung eingeschaltet | false = ausgeschaltet | true = Data transfer enabled | false = disabled
+        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen | Enter the Ecowitt data file here
+        apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen | Enter your API key here
         'stationId' => '2'
     ]
 ];
 
 // --- HILFSFUNKTIONEN ---
+// --- HELPER FUNCTIONS ---
 
 // Für den Tagesniederschlag (mprecip), da die API hier standardmäßig mm erwartet
+// For daily precipitation (mprecip), since the API expects mm by default
 function inToMm($in) { 
     return ($in !== null && $in !== '') ? round((float)$in * 25.4, 1) : null; 
 }
 
 // Berechnet den Taupunkt in Celsius anhand der Magnus-Formel
+// Calculates the dew point in Celsius using the Magnus formula
 function calculateDewPointC($tempF, $humidity) {
     if ($tempF === null || $tempF === '' || $humidity === null || $humidity === '') {
         return null;
@@ -70,8 +73,10 @@ function calculateDewPointC($tempF, $humidity) {
 }
 
 // --- HAUPTPROZESS ---
+// --- MAIN PROCESS ---
 // Diese Ausgabe nutzt nun automatisch 'Europe/Berlin' durch die Einstellung oben
-echo "[" . date('Y-m-d H:i:s') . "] Starte Datenuebertragung an Windy...\n";
+// This version now automatically uses 'Europe/Berlin' based on the setting above
+echo "[" . date('Y-m-d H:i:s') . "] Starte Datenuebertragung an Windy... | Start data transfer to Windy...\n";
 
 foreach ($stations as $name => $config) {
     if (!$config['active']) {
