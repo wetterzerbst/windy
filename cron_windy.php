@@ -137,7 +137,7 @@ foreach ($stations as $name => $config) {
                 'humidity'       => isset($row['humidity']) && $row['humidity'] !== '' ? (int)$row['humidity'] : null,
                 'dewpoint'       => calculateDewPointC($row['tempf'] ?? null, $row['humidity'] ?? null),
                 
-                // Luftdruck 
+                // Luftdruck | Air pressure
                 'baromin'        => isset($row['baromrelin']) && $row['baromrelin'] !== '' ? (float)$row['baromrelin'] : null,
                 
                 // Wind 
@@ -145,7 +145,7 @@ foreach ($stations as $name => $config) {
                 'windgustmph'    => isset($row['windgustmph']) && $row['windgustmph'] !== '' ? (float)$row['windgustmph'] : null,
                 'winddir'        => isset($row['winddir']) && $row['winddir'] !== '' ? (int)$row['winddir'] : null,
                 
-                // Niederschlag
+                // Niederschlag | Precipitation
                 'hourlyrainin'   => isset($row['hourlyrainin']) && $row['hourlyrainin'] !== '' ? (float)$row['hourlyrainin'] : null,
                 'mprecip'        => isset($row['dailyrainin']) && $row['dailyrainin'] !== '' ? inToMm($row['dailyrainin']) : null, 
                 
@@ -157,6 +157,7 @@ foreach ($stations as $name => $config) {
     ];
 
     // Leere (null) Felder sauber aus dem JSON-Payload entfernen
+    // Cleanly remove empty (null) fields from the JSON payload
     $payload['observations'][0] = array_filter($payload['observations'][0], function($value) {
         return $value !== null;
     });
@@ -165,6 +166,7 @@ foreach ($stations as $name => $config) {
     $url = "https://stations.windy.com/pws/update/" . trim($config['apiKey']);
 
     // 2. cURL Request senden (POST JSON)
+    // 2. cURL Request from you (POST JSON)
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -182,17 +184,19 @@ foreach ($stations as $name => $config) {
     curl_close($ch);
 
     // 3. Auswertung (Log-Ausgabe nutzt jetzt $logTime statt $dateIso)
+    // 3. Evaluation (log output now uses $logTime instead of $dateIso)
     if ($curlError) {
-        echo "-> Station [$name]: KRITISCHER FEHLER (cURL) - " . $curlError . "\n";
+        echo "-> Station [$name]: KRITISCHER FEHLER | CRITICAL ERROR (cURL) - " . $curlError . "\n";
     } elseif ($httpCode >= 200 && $httpCode < 300) {
-        echo "-> Station [$name]: Daten erfolgreich uebertragen. (HTTP $httpCode, Zeit: $logTime)\n";
+        echo "-> Station [$name]: Daten erfolgreich uebertragen. | Data successfully transferred. (HTTP $httpCode, Zeit: $logTime)\n";
     } else {
-        echo "-> Station [$name]: API FEHLER - HTTP Code: $httpCode | Antwort: " . trim($response) . "\n";
-        echo "   Gesendete URL: $url\n";
-        echo "   Gesendetes JSON: $jsonPayload\n";
+        echo "-> Station [$name]: API FEHLER | API ERROR - HTTP Code: $httpCode | Antwort | Response: " . trim($response) . "\n";
+        echo "   Gesendete | Sent URL: $url\n";
+        echo "   Gesendetes | Sent JSON: $jsonPayload\n";
     }
 }
 
 // Nutzt ebenfalls 'Europe/Berlin'
-echo "[" . date('Y-m-d H:i:s') . "] Prozess beendet.\n\n";
+// Also uses 'Europe/Berlin'
+echo "[" . date('Y-m-d H:i:s') . "] Prozess beendet. | Process completed.\n\n";
 ?>
