@@ -80,12 +80,12 @@ echo "[" . date('Y-m-d H:i:s') . "] Starte Datenuebertragung an Windy... | Start
 
 foreach ($stations as $name => $config) {
     if (!$config['active']) {
-        echo "-> Station [$name]: Deaktiviert.\n";
+        echo "-> Station [$name]: Deaktiviert. | Disabled.\n";
         continue;
     }
 
     if (!file_exists($config['path'])) {
-        echo "-> Station [$name]: FEHLER - Datei nicht gefunden.\n";
+        echo "-> Station [$name]: FEHLER - Datei nicht gefunden. | ERROR - File not found.\n";
         continue;
     }
 
@@ -104,12 +104,15 @@ foreach ($stations as $name => $config) {
     $row = array_combine($header, $data);
 
     // Datum aus CSV auslesen
+    // Read date from CSV
     $dateUtcStr = $row['dateutc'] ?? '';
     
     // Formatieren in ISO 8601 für Windy (z.B. "2026-05-24T04:45:44Z" -> Bleibt UTC!)
+    // Format in ISO 8601 for Windy (e.g., "2026-05-24T04:45:44Z" -> Remains in UTC!)
     $dateIso = str_replace(' ', 'T', $dateUtcStr) . 'Z';
 
     // --- NEU: Zeitstempel der Messung für das Logfile in Europe/Berlin umwandeln ---
+    // --- NEW: Convert the measurement timestamp for the log file to Europe/Berlin ---
     try {
         $dt = new DateTime($dateUtcStr, new DateTimeZone('UTC'));
         $dt->setTimezone(new DateTimeZone('Europe/Berlin'));
@@ -119,13 +122,15 @@ foreach ($stations as $name => $config) {
     }
 
     // 1. JSON Payload für die v2 API zusammenbauen
+    // 1. Assemble the JSON payload for the v2 API
     $payload = [
         'observations' => [
             [
                 'station'        => (int)$config['stationId'],
-                'dateutc'        => $dateIso, // Windy bekommt weiterhin brav UTC
+                'dateutc'        => $dateIso, // Windy bekommt weiterhin brav UTC | Windy continues to display UTC properly
                 
                 // Temperatur, Luftfeuchtigkeit & Taupunkt
+                // Temperature, Humidity & Dew Point
                 'tempf'          => isset($row['tempf']) && $row['tempf'] !== '' ? (float)$row['tempf'] : null,
                 'humidity'       => isset($row['humidity']) && $row['humidity'] !== '' ? (int)$row['humidity'] : null,
                 'dewpoint'       => calculateDewPointC($row['tempf'] ?? null, $row['humidity'] ?? null),
