@@ -4,9 +4,15 @@
  * Optimiert für direkte Nutzung imperialer Einheiten (Ecowitt CSV Format)
  * Inkl. Regen, Solar, UV, Taupunkt und lokaler Zeitzone für Logs
  * Ermöglicht das übertragen mehrerer Stationen an Windy
+ * ===
+ * Zerbst Weather Network (ZEWN) - Windy API v2 (JSON POST via cURL)
+ * Optimized for direct use of imperial units (Ecowitt CSV format)
+ * Includes rain, solar, UV, dew point, and local time zone for logs
+ * Enables the transmission of data from multiple stations to Windy
  */
 
 // --- NEU: Standard-Zeitzone für alle PHP-Datumsfunktionen auf Berlin setzen ---
+// --- NEW: Set the default time zone for all PHP date functions to Berlin ---
 date_default_timezone_set('Europe/Berlin');
 
 if (!isset($dir)) {
@@ -14,11 +20,12 @@ if (!isset($dir)) {
 }
 
 // --- KONFIGURATION DER STATIONEN ---
+// --- STATION CONFIGURATION ---
 $stations = [
     'Timbuktu' => [
-        'active'    => true, // true = Datenübertragung eingeschaltet | false = ausgeschaltet
-        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen
-        'apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen
+        'active'    => true, // true = Datenübertragung eingeschaltet | false = ausgeschaltet | true = Data transfer enabled | false = disabled
+        'path'      => $dir . '/pfad/zur/datei/live.csv', // Ecowitt Datendatei hier eintragen | Enter the Ecowitt data file here
+        'apiKey'    => '4565ch8fgm8ghc8nv46hgvn89rh49n8g5hcf8e47gn895hchncg84h5cg8cnghncg', // API-Key hier eintragen | Enter your API key here
         'stationId' => '0'
     ],
     'Washington' => [
