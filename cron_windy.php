@@ -46,7 +46,7 @@ $stations = [
         'password'     => 'fch485f6hg537g593487g48gh4873g847gh08745hg087754hg4gh548hhg487gh',
         'min_interval' => 300
     ],
-    'STATION1' => [
+    'STATION3' => [
         'active'       => true,
         'path'         => $dir . '/path/station3/live.csv',
         'stationId'    => '1fXXXXXXX',
